@@ -28,13 +28,14 @@ export class ProductListComponent implements OnInit {
   listProducts(){
     //verifier si le parametre id est disponible
 
-    const hasCategoryId:boolean=this.route.snapshot.paramMap.has('id');
-    // get the id param string convert to a number using the + symbol
-    // Obtenir l'ID de catégorie ou utiliser la catégorie par défaut
-    this.currentCategoryId = hasCategoryId
-      ? +this.route.snapshot.paramMap.get('id')!
-      : 1; 
+    const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 
+if (hasCategoryId) {
+  const id = this.route.snapshot.paramMap.get('id');
+  this.currentCategoryId = id ? Number.parseInt(id, 10) : 1; // Vérifiez si id n'est pas null
+} else {
+  this.currentCategoryId = 1;
+}
     this.productService.getProductList(this.currentCategoryId).subscribe(
       data =>{
         this.products=data;
