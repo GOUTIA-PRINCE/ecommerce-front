@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductCategory } from 'src/app/common/product-category';
 import { ProductService } from 'src/app/services/product.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-product-category-menu',
@@ -9,23 +11,26 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductCategoryMenuComponent implements OnInit {
 
-  productCategories:ProductCategory[]=[];
+  productCategories: ProductCategory[] = [];
 
-  constructor(private productService:ProductService) { }
- 
+  constructor(private productService: ProductService) {}
+
   ngOnInit(): void {
     this.listProductCategories();
   }
 
-  listProductCategories() {
-    
-    this.productService.getProductCategories().subscribe(
-      data => {
-        console.log('Product Categories=' + JSON.stringify(data));
+  listProductCategories(): void {
+    this.productService.getProductCategories()
+      .pipe(
+        catchError(error => {
+          console.error('Erreur lors de la récupération des catégories de produits', error);
+          return of([]); // Retourne un tableau vide en cas d'erreur
+        })
+      )
+      .subscribe(data => {
+        console.log('Product Categories=', JSON.stringify(data));
         this.productCategories = data;
-      }
-    );
-
+      });
   }
 
 }

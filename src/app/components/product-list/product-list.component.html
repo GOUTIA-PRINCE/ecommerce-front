@@ -1,5 +1,3 @@
 <p *ngFor="let tempProduct of products">
-
-    {{tempProduct.name}}:{{tempProduct.unit_price|currency:'USD'}}
-
+    {{ tempProduct.name}}: {{ tempProduct.unit_price | currency:'USD'}}
 </p>
