@@ -1,23 +1,26 @@
 <div class="main-content">
     <div class="section-content section-content-p30">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row product-grid">
 
                 <!-- loop over the collection of products -->
                 <div *ngFor="let tempProduct of products" class="col-md-3">
 
-                    <div class="product-box">
-
-                        <a routerLink="/products/{{ tempProduct.id }}" style="text-decoration: none;">
-                            <img src="{{ tempProduct.image_url }}" class="img-responsive">
+                    <div class="product-box product-card">
+                        <a routerLink="/products/{{ tempProduct.id }}" class="product-media">
+                            <img src="{{ tempProduct.image_url }}" class="img-responsive" alt="{{ tempProduct.name }}">
                         </a>
 
-                        <a routerLink="/products/{{ tempProduct.id }}" style="text-decoration: none;">
-                            <h1>{{ tempProduct.name }}</h1>
-                        </a>
-                        
-                        <div class="price">{{ tempProduct.unit_price | currency:'USD' }}</div>
-                        <button (click)="addToCart(tempProduct)" class="btn btn-primary btn-sm">Add to cart</button>
+                        <div class="product-body">
+                            <a routerLink="/products/{{ tempProduct.id }}" class="product-title">
+                                <h1>{{ tempProduct.name }}</h1>
+                            </a>
+
+                            <div class="product-meta">
+                                <div class="price">{{ tempProduct.unit_price | currency:'USD' }}</div>
+                                <button (click)="addToCart(tempProduct)" class="btn btn-primary btn-sm btn-cta">Add to cart</button>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -59,7 +62,6 @@
                                     <option value="20">20</option>
                                     <option value="50">50</option>
                                   </select>
-                                  >
                                 
                                 
                                 

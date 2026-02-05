@@ -1,33 +1,40 @@
 <div class="page-wrapper">
 
-  <!-- MENU SIDEBAR-->
-  <aside class="menu-sidebar d-none d-lg-block">
-    <div class="logo">
-      <a routerLink="/products">
-        <img src="assets/images/logo.png" alt="luv2shop" class="img-responsive">
-      </a>
-    </div>
-
-    <app-product-category-menu></app-product-category-menu>
-
-  </aside>
-  <!-- END MENU SIDEBAR-->
-
   <div class="page-container">
     <!-- HEADER DESKTOP-->
     <header class="header-desktop">
-      <div class="section-content section-content-p30">
-        <div class="container-fluid">
-          <div class="header-wrap">
+      <div class="header-surface">
+        <div class="section-content section-content-p30">
+          <div class="container-fluid">
+            <div class="header-wrap">
+              <div class="header-left">
+                <a routerLink="/products" class="header-logo">
+                  <img src="assets/images/logo.png" alt="luv2shop">
+                </a>
 
-            <app-search></app-search>
- 
-            <app-login-status></app-login-status>
+                <div class="category-menu-wrap" [class.open]="isCategoryMenuOpen" (click)="$event.stopPropagation()">
+                  <button class="category-menu-toggle" type="button" (click)="toggleCategoryMenu($event)">
+                    Categories
+                    <span class="chevron"></span>
+                  </button>
+                  <div class="category-dropdown">
+                    <app-product-category-menu></app-product-category-menu>
+                  </div>
+                </div>
 
-            <app-cart-status></app-cart-status>
+                <div class="header-announce">
+                  <span class="pulse-dot"></span>
+                  Livraison offerte des 49 €
+                </div>
+                <app-search></app-search>
+              </div>
 
+              <div class="header-right">
+                <app-login-status></app-login-status>
+                <app-cart-status></app-cart-status>
+              </div>
+            </div>
           </div>
-          <div class="account-wrap"></div>
         </div>
       </div>
     </header>
@@ -41,10 +48,45 @@
 
 <!-- ENDS PAGE CONTAINER -->
 
-<footer>
-  <ul>
-    <li><a href="#">About Us</a></li>
-    <li><a href="#">Contact Us</a></li>
-    <li><a href="#">Help</a></li>
-  </ul>
+<footer class="site-footer">
+  <div class="footer-surface">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/images/logo.png" alt="luv2shop" class="footer-logo">
+        <p>Produits choisis, livraison rapide, support humain.</p>
+        <div class="footer-badges">
+          <span>Retour 30j</span>
+          <span>Paiement securise</span>
+          <span>Support 7/7</span>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <a href="#">About Us</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Help</a>
+        <a href="#">Livraison</a>
+        <a href="#">Retours</a>
+        <a href="#">CGU</a>
+      </div>
+
+      <div class="footer-newsletter">
+        <h4>Offres privees</h4>
+        <p>Une newsletter courte, des remises reelles.</p>
+        <form class="footer-form">
+          <input type="email" placeholder="Votre email">
+          <button type="button">S'inscrire</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Luv2Shop. Tous droits reserves.</span>
+      <div class="footer-socials">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="LinkedIn">IN</a>
+        <a href="#" aria-label="X">X</a>
+      </div>
+    </div>
+  </div>
 </footer>
