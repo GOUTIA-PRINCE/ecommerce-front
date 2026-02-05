@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Country } from 'src/app/common/country';
 import { Order } from 'src/app/common/order';
@@ -19,6 +19,7 @@ import { Luv2ShopValidators } from 'src/app/validators/luv2-shop-validators';
 export class CheckoutComponent implements OnInit {
 
   checkoutFormGroup!: FormGroup;
+  currentStep: number = 1;
 
   totalPrice: number = 0;
   totalQuantity: number = 0;
@@ -96,6 +97,7 @@ export class CheckoutComponent implements OnInit {
                   Validators.minLength(2),
                   Luv2ShopValidators.notOnlyWhitespace])
       }),
+      paymentMethod: new FormControl('', Validators.required),
       creditCard: this.formBuilder.group({
         cardType: new FormControl('', Validators.required),
         nameOnCard:new FormControl('', 
@@ -106,8 +108,21 @@ export class CheckoutComponent implements OnInit {
         securityCode: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{3,4}$')]),
         expirationMonth: new FormControl('', Validators.required),
         expirationYear: new FormControl('', Validators.required)
+      }),
+      orangeMoney: this.formBuilder.group({
+        mobileNumber: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{6,15}$')]),
+        fullName: new FormControl('', [Validators.required, Validators.minLength(2), Luv2ShopValidators.notOnlyWhitespace])
+      }),
+      momo: this.formBuilder.group({
+        mobileNumber: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{6,15}$')]),
+        fullName: new FormControl('', [Validators.required, Validators.minLength(2), Luv2ShopValidators.notOnlyWhitespace])
       })
     });
+
+    this.setPaymentGroupState(this.paymentMethod?.value);
+    this.checkoutFormGroup.get('paymentMethod')?.valueChanges.subscribe(
+      method => this.setPaymentGroupState(method)
+    );
 
     this.populateCreditCardDates();
   }
@@ -161,6 +176,25 @@ export class CheckoutComponent implements OnInit {
   get creditCardNameOnCard() { return this.checkoutFormGroup.get('creditCard.nameOnCard'); }
   get creditCardNumber() { return this.checkoutFormGroup.get('creditCard.cardNumber'); }
   get creditCardSecurityCode() { return this.checkoutFormGroup.get('creditCard.securityCode'); }
+  get paymentMethod() { return this.checkoutFormGroup.get('paymentMethod'); }
+  get orangeMoneyMobileNumber() { return this.checkoutFormGroup.get('orangeMoney.mobileNumber'); }
+  get orangeMoneyFullName() { return this.checkoutFormGroup.get('orangeMoney.fullName'); }
+  get momoMobileNumber() { return this.checkoutFormGroup.get('momo.mobileNumber'); }
+  get momoFullName() { return this.checkoutFormGroup.get('momo.fullName'); }
+
+  isPaymentDetailsValid(): boolean {
+    const method = this.paymentMethod?.value;
+    if (method === 'card') {
+      return this.checkoutFormGroup.get('creditCard')?.valid ?? false;
+    }
+    if (method === 'orangeMoney') {
+      return this.checkoutFormGroup.get('orangeMoney')?.valid ?? false;
+    }
+    if (method === 'momo') {
+      return this.checkoutFormGroup.get('momo')?.valid ?? false;
+    }
+    return false;
+  }
 
   copyShippingAddressToBillingAddress(event: Event) {
     const checkbox = event.target as HTMLInputElement;
@@ -257,6 +291,8 @@ export class CheckoutComponent implements OnInit {
     this.cartService.totalQuantity.next(0);
     //reset the form
     this.checkoutFormGroup.reset();
+    this.setPaymentGroupState('');
+    this.currentStep = 1;
     //navigate back to the products page
     this.router.navigateByUrl("/products");
   }
@@ -295,5 +331,87 @@ export class CheckoutComponent implements OnInit {
         }
       }
     );
+  }
+
+  private setPaymentGroupState(method: string | null) {
+    const creditCardGroup = this.checkoutFormGroup.get('creditCard');
+    const orangeMoneyGroup = this.checkoutFormGroup.get('orangeMoney');
+    const momoGroup = this.checkoutFormGroup.get('momo');
+
+    creditCardGroup?.disable({ emitEvent: false });
+    orangeMoneyGroup?.disable({ emitEvent: false });
+    momoGroup?.disable({ emitEvent: false });
+
+    if (method === 'card') {
+      creditCardGroup?.enable({ emitEvent: false });
+    } else if (method === 'orangeMoney') {
+      orangeMoneyGroup?.enable({ emitEvent: false });
+    } else if (method === 'momo') {
+      momoGroup?.enable({ emitEvent: false });
+    }
+  }
+
+  nextStep() {
+    if (!this.isStepValid(this.currentStep)) {
+      this.markStepTouched(this.currentStep);
+      return;
+    }
+    if (this.currentStep < 5) {
+      this.currentStep += 1;
+    }
+  }
+
+  prevStep() {
+    if (this.currentStep > 1) {
+      this.currentStep -= 1;
+    }
+  }
+
+  private isStepValid(step: number): boolean {
+    if (step === 1) {
+      return this.checkoutFormGroup.get('customer')?.valid ?? false;
+    }
+    if (step === 2) {
+      return this.checkoutFormGroup.get('shippingAddress')?.valid ?? false;
+    }
+    if (step === 3) {
+      return this.checkoutFormGroup.get('billingAddress')?.valid ?? false;
+    }
+    if (step === 4) {
+      return this.paymentMethod?.valid ? this.isPaymentDetailsValid() : false;
+    }
+    if (step === 5) {
+      return this.checkoutFormGroup.valid;
+    }
+    return false;
+  }
+
+  private markStepTouched(step: number) {
+    if (step === 1) {
+      this.markGroupTouched(this.checkoutFormGroup.get('customer'));
+    } else if (step === 2) {
+      this.markGroupTouched(this.checkoutFormGroup.get('shippingAddress'));
+    } else if (step === 3) {
+      this.markGroupTouched(this.checkoutFormGroup.get('billingAddress'));
+    } else if (step === 4) {
+      this.paymentMethod?.markAsTouched();
+      const method = this.paymentMethod?.value;
+      if (method === 'card') {
+        this.markGroupTouched(this.checkoutFormGroup.get('creditCard'));
+      } else if (method === 'orangeMoney') {
+        this.markGroupTouched(this.checkoutFormGroup.get('orangeMoney'));
+      } else if (method === 'momo') {
+        this.markGroupTouched(this.checkoutFormGroup.get('momo'));
+      }
+    }
+  }
+
+  private markGroupTouched(control: AbstractControl | null) {
+    if (!control) return;
+    if (control instanceof FormGroup) {
+      Object.values(control.controls).forEach(child => this.markGroupTouched(child));
+    } else {
+      control.markAsTouched();
+    }
   }
 }
