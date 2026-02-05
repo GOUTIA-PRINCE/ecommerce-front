@@ -1,12 +1,12 @@
-<div class="main-content page-m">
+<div class="main-content page-m checkout">
     <div class="section-content section-content-p30">
         <div class="container-fluid">
 
-            <form [formGroup]="checkoutFormGroup" (ngSubmit)="onSubmit()">
+            <form [formGroup]="checkoutFormGroup" (ngSubmit)="onSubmit()" class="checkout-form">
 
                 <!-- customer form group -->
-                <div formGroupName="customer" class="form-area">
-                    <h3>Customer</h3>
+                <div formGroupName="customer" class="form-area checkout-card">
+                    <h3 class="checkout-card__title">Customer</h3>
 
                     <div class="row">
                         <div class="col-md-2"> <label>First Name</label></div>
@@ -68,8 +68,8 @@
                 </div>
 
                 <!-- shipping Address -->
-                <div formGroupName="shippingAddress" class="form-area">
-                    <h3>Shipping Address</h3>
+                <div formGroupName="shippingAddress" class="form-area checkout-card">
+                    <h3 class="checkout-card__title">Shipping Address</h3>
 
                     <div class="row">
                         <div class="col-md-2"> <label>Country</label></div>
@@ -171,7 +171,7 @@
                 </div>
 
                 <!-- Add check box to copy shipping to billing -->
-                <div class="input-space">
+                <div class="input-space checkout-toggle">
                     <label class="au-checkbox">
                         <input type="checkbox" (change)="copyShippingAddressToBillingAddress($event)">
                         <span class="au-checkmark"></span>Billing Address same as Shipping Address
@@ -180,8 +180,8 @@
 
 
                 <!-- Billing Address -->
-                <div formGroupName="billingAddress" class="form-area">
-                    <h3>Billing Address</h3>
+                <div formGroupName="billingAddress" class="form-area checkout-card">
+                    <h3 class="checkout-card__title">Billing Address</h3>
 
                     <div class="row">
                         <div class="col-md-2"> <label>Country</label></div>
@@ -281,8 +281,8 @@
                 </div>
 
                 <!-- Credit Card -->
-                <div formGroupName="creditCard" class="form-area">
-                    <h3>Credit Card</h3>
+                <div formGroupName="creditCard" class="form-area checkout-card">
+                    <h3 class="checkout-card__title">Credit Card</h3>
 
                     <div class="row">
                         <div class="col-md-2"> <label>Card Type</label></div>
@@ -388,8 +388,8 @@
                 </div>
 
                 <!-- Order details -->
-                <div class="form-area">
-                    <h3>Review Your Order</h3>
+                <div class="form-area checkout-card checkout-summary">
+                    <h3 class="checkout-card__title">Review Your Order</h3>
 
                     <p>Total Quantity: {{ totalQuantity }}</p>
                     <p>Shipping: FREE</p>
@@ -397,8 +397,8 @@
                 </div>
 
                 <!-- submit button-->
-                <div class="text-center">
-                    <button type="submit" class="btn btn-info">Purchase</button>
+                <div class="text-center checkout-submit">
+                    <button type="submit" class="btn btn-info checkout-submit__btn">Purchase</button>
                 </div>
 
             </form>

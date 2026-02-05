@@ -1,0 +1,127 @@
+.checkout {
+  --co-bg: #f6f1ea;
+  --co-card: #ffffff;
+  --co-ink: #1c1a17;
+  --co-muted: #6b6258;
+  --co-accent: #14645d;
+  --co-accent-strong: #0e4f4a;
+  --co-border: #e3dbd0;
+  --co-shadow: 0 18px 40px rgba(12, 10, 8, 0.12);
+}
+
+.checkout .container-fluid {
+  padding-top: 16px;
+}
+
+.checkout-form {
+  display: grid;
+  gap: 20px;
+}
+
+.checkout-card {
+  background: var(--co-card);
+  border: 1px solid var(--co-border);
+  border-radius: 18px;
+  padding: 20px 22px;
+  box-shadow: var(--co-shadow);
+}
+
+.checkout-card__title {
+  font-weight: 700;
+  color: var(--co-ink);
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+.checkout .row {
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.checkout label {
+  color: var(--co-muted);
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.checkout input,
+.checkout select {
+  width: 100%;
+  border: 1px solid var(--co-border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fbfaf8;
+  color: var(--co-ink);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.checkout input:focus,
+.checkout select:focus {
+  outline: none;
+  border-color: var(--co-accent);
+  box-shadow: 0 0 0 3px rgba(20, 100, 93, 0.15);
+  background: #fff;
+}
+
+.checkout .alert {
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.checkout-toggle {
+  background: #f8f3ed;
+  border: 1px dashed var(--co-border);
+  border-radius: 14px;
+  padding: 12px 16px;
+}
+
+.checkout-summary {
+  background: radial-gradient(circle at top right, #f0e8de 0%, #f7f1ea 55%, #f4eee6 100%);
+}
+
+.checkout-summary p {
+  font-weight: 600;
+  color: var(--co-ink);
+  margin-bottom: 6px;
+}
+
+.checkout-summary p:last-child {
+  color: var(--co-accent);
+  font-size: 18px;
+}
+
+.checkout-submit {
+  margin-top: 6px;
+}
+
+.checkout-submit__btn {
+  background: var(--co-accent);
+  border-color: var(--co-accent);
+  color: #fff;
+  padding: 10px 26px;
+  border-radius: 14px;
+  font-weight: 700;
+  box-shadow: 0 10px 20px rgba(20, 100, 93, 0.2);
+}
+
+.checkout-submit__btn:hover,
+.checkout-submit__btn:focus {
+  background: var(--co-accent-strong);
+  border-color: var(--co-accent-strong);
+}
+
+@media (max-width: 991px) {
+  .checkout-card {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 575px) {
+  .checkout .row {
+    margin-bottom: 16px;
+  }
+
+  .checkout-card__title {
+    font-size: 16px;
+  }
+}

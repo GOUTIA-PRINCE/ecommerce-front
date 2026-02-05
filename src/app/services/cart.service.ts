@@ -80,7 +80,10 @@ export class CartService {
   }
 
   remove(theCartItem: CartItem): void {
-    this.cartItems = this.cartItems.filter(item => item.id !== theCartItem.id);
+    const itemIndex = this.cartItems.findIndex(item => item.id === theCartItem.id);
+    if (itemIndex > -1) {
+      this.cartItems.splice(itemIndex, 1);
+    }
     this.computeCartTotals();
   }
 }

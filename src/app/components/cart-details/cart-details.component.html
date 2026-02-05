@@ -1,10 +1,10 @@
-<div class="main-content">
+<div class="main-content cart-details">
     <div class="section-content section-content-p30">
         <div class="container-fluid">
 
-            <div *ngIf="cartItems.length > 0">
+            <div *ngIf="cartItems.length > 0" class="cart-details__content">
 
-                <table class="table table-bordered">
+                <table class="table table-bordered cart-details__table">
                     <tr>
                         <th width="20%">Product Image</th>
                         <th width="50%">Product Detail</th>
@@ -12,30 +12,30 @@
                     </tr>
 
                     <tr *ngFor="let tempCartItem of cartItems">
-                        <td>
-                            <img src="{{ tempCartItem.image_url }}" class="img-responsive" width="150px" />
+                        <td class="cart-details__image-cell">
+                            <img src="{{ tempCartItem.image_url }}" class="img-responsive cart-details__image" width="150px" />
                         </td>
-                        <td>
-                            <p>{{ tempCartItem.name }}</p>
-                            <p>{{ tempCartItem.unit_price | currency: 'USD' }}</p>
+                        <td class="cart-details__detail-cell">
+                            <p class="cart-details__name">{{ tempCartItem.name }}</p>
+                            <p class="cart-details__price">{{ tempCartItem.unit_price | currency: 'USD' }}</p>
                         </td>
-                        <td>
-                            <div class="items">
-                                <label>Quantity:</label>
+                        <td class="cart-details__actions">
+                            <div class="items cart-details__qty">
+                                <label class="cart-details__qty-label">Quantity:</label>
 
-                                <div class="row no-gutters">
+                                <div class="row no-gutters cart-details__qty-row">
                                     <div class="col">
-                                        <button (click)="incrementQuantity(tempCartItem)" class="btn btn-primary btn-sm">
+                                        <button (click)="incrementQuantity(tempCartItem)" class="btn btn-primary btn-sm cart-details__btn">
                                             <i class="fas fa-plus"></i>
                                         </button>
                                     </div>
 
-                                    <div class="col ml-4 mr-2">
+                                    <div class="col ml-4 mr-2 cart-details__qty-value">
                                         {{ tempCartItem.quantity }}
                                     </div>
 
                                     <div class="col">
-                                        <button (click)="decrementQuantity(tempCartItem)" class="btn btn-primary btn-sm">
+                                        <button (click)="decrementQuantity(tempCartItem)" class="btn btn-primary btn-sm cart-details__btn">
                                             <i class="fas fa-minus"></i>
                                         </button>
                                     </div>
@@ -45,19 +45,19 @@
 
                             </div>
 
-                            <button (click)="remove(tempCartItem)" class="btn btn-primary btn-sm mt-2">Remove</button>
+                            <button (click)="remove(tempCartItem)" class="btn btn-primary btn-sm mt-2 cart-details__remove">Remove</button>
 
-                            <p class="mt-2">Subtotal: {{ tempCartItem.quantity * tempCartItem.unit_price | currency: 'USD' }}</p>
+                            <p class="mt-2 cart-details__subtotal">Subtotal: {{ tempCartItem.quantity * tempCartItem.unit_price | currency: 'USD' }}</p>
                         </td>
                     </tr>
 
-                    <tr>
+                    <tr class="cart-details__summary-row">
                         <td colspan="2"></td>
-                        <td style="font-weight: bold">
+                        <td class="cart-details__summary">
                             <p>Total Quantity: {{ totalQuantity }}</p>
                             <p>Shipping: FREE</p>
-                            <p>Total Price: {{ totalPrice | currency: 'USD' }}</p>
-                            <a routerLink="/checkout" class="btn btn-primary" style="text-decoration: none;">Checkout</a>
+                            <p class="cart-details__total">Total Price: {{ totalPrice | currency: 'USD' }}</p>
+                            <a routerLink="/checkout" class="btn btn-primary cart-details__checkout">Checkout</a>
                         </td>
                     </tr>
 
@@ -66,7 +66,7 @@
             </div>
 
             <!-- if cart is empty then display a message -->
-            <div *ngIf="cartItems.length == 0" class="alert alert-warning col-md-12" role="alert">
+            <div *ngIf="cartItems.length == 0" class="alert alert-warning col-md-12 cart-details__empty" role="alert">
                 Your shopping cart is empty. 
             </div>
 
